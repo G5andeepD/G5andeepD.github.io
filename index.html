@@ -104,10 +104,35 @@
     .hero-gradient-bg {
       background: linear-gradient(120deg, #6366f1 0%, #a21caf 50%, #f43f5e 100%);
     }
+
+    .hero-viewport { overflow: hidden; width: 100%; isolation: isolate; }
+    .hero-track {
+      display: flex;
+      align-items: stretch;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .hero-slide { flex: 0 0 100%; }
+    @media (min-width: 768px) {
+      .hero-viewport { height: 100%; }
+      .hero-track { height: 100%; }
+      .hero-slide { height: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-track { transition: none; }
+    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-slate-100 to-slate-300 dark:from-slate-900 dark:to-slate-800 text-slate-800 dark:text-slate-100 transition-colors duration-300 font-sans">
   <div class="flex min-h-screen">
+    <!-- Mobile dark-mode toggle (fixed top-right, hidden on desktop) -->
+    <button id="dark-toggle-mobile" aria-label="Toggle dark mode" class="md:hidden fixed top-3 right-3 z-50 p-2.5 rounded-full bg-white/80 dark:bg-slate-800/90 shadow-lg backdrop-blur border border-slate-200 dark:border-slate-700 hover:bg-accent hover:text-white dark:hover:bg-accent transition-colors">
+      <i class="fas fa-moon dark:hidden text-slate-700"></i>
+      <i class="fas fa-sun hidden dark:block text-yellow-300"></i>
+    </button>
+
     <!-- Sidebar Navigation -->
     <aside class="w-20 md:w-64 flex flex-col items-center py-8 px-2 bg-white/80 dark:bg-slate-900/80 glass shadow-xl fixed h-full z-40">
       <div class="mb-8 flex flex-col items-center">
@@ -131,26 +156,89 @@
       </button>
     </aside>
     <!-- Main Content -->
-    <main class="flex-1 ml-20 md:ml-64 p-6 md:p-12">
+    <main class="flex-1 ml-20 md:ml-64 p-3 sm:p-6 md:p-12">
       <!-- Hero Section -->
-      <section id="hero" class="min-h-[60vh] flex flex-col md:flex-row items-center justify-center gap-10 hero-gradient-bg rounded-3xl glass shadow-2xl p-8 md:p-16 mb-12">
-        <div class="flex flex-col items-center md:items-start flex-1">
-          <h1 class="text-5xl md:text-6xl font-extrabold mb-4 text-white drop-shadow-lg">Sandeep Dassanayake</h1>
-          <h2 class="text-2xl md:text-3xl font-semibold mb-2 text-white/90">Final-Year Undergraduate in Computer Engineering</h2>
-          <p class="text-lg text-white/80 mb-2">University of Peradeniya</p>
-          <div class="flex justify-center items-center gap-2 mb-8">
-            <span class="text-blue-100 text-base font-medium flex items-center">
-              <i class="fas fa-chess mr-2"></i>Chess & Astronomy Enthusiast
-            </span>
-          </div>
-          <div class="flex gap-4 mt-2">
-            <a href="https://linkedin.com/in/sandeep-dassanayake" target="_blank" class="text-white/80 hover:text-accent text-2xl"><i class="fab fa-linkedin"></i></a>
-            <a href="https://github.com/G5andeepD" target="_blank" class="text-white/80 hover:text-accent text-2xl"><i class="fab fa-github"></i></a>
-            <a href="mailto:gdasanayake54@gmail.com" class="text-white/80 hover:text-accent text-2xl"><i class="fas fa-envelope"></i></a>
+      <section id="hero" class="relative flex items-center hero-gradient-bg rounded-3xl glass shadow-2xl overflow-hidden mb-12 md:min-h-[60vh]">
+        <div id="hero-carousel" class="hero-viewport">
+          <div class="hero-track" data-hero-track>
+            <!-- Slide 1: Basic Profile -->
+            <div class="hero-slide" data-hero-slide>
+              <div class="w-full h-full px-4 py-8 sm:px-6 sm:py-10 md:p-16 flex flex-col md:flex-row items-center justify-center gap-5 md:gap-10 pb-14 md:pb-16">
+                <div class="flex flex-col items-center md:items-start min-w-0 w-full md:flex-1 text-center md:text-left overflow-hidden">
+                  <h1 class="text-2xl sm:text-3xl md:text-6xl font-extrabold mb-2 text-white drop-shadow-lg leading-tight w-full">Sandeep Dassanayake</h1>
+                  <h2 class="text-base sm:text-lg md:text-3xl font-semibold mb-1 text-white/90">Computer Engineering Graduate</h2>
+                  <p class="text-sm sm:text-base md:text-lg text-white/80 mb-1">University of Peradeniya</p>
+                  <p class="text-sm sm:text-base md:text-lg text-white/85 mb-3">Teaching Assistant, Dept. of Computer Engineering</p>
+                  <div class="flex justify-center md:justify-start items-center gap-2 mb-4">
+                    <span class="text-blue-100 text-xs sm:text-sm md:text-base font-medium flex items-center">
+                      <i class="fas fa-chess mr-2"></i>Chess & Astronomy Enthusiast
+                    </span>
+                  </div>
+                  <div class="flex gap-4">
+                    <a href="https://linkedin.com/in/sandeep-dassanayake" target="_blank" class="text-white/80 hover:text-accent text-lg md:text-2xl"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/G5andeepD" target="_blank" class="text-white/80 hover:text-accent text-lg md:text-2xl"><i class="fab fa-github"></i></a>
+                    <a href="mailto:gdasanayake54@gmail.com" class="text-white/80 hover:text-accent text-lg md:text-2xl"><i class="fas fa-envelope"></i></a>
+                  </div>
+                </div>
+                <div class="hidden sm:flex justify-center md:flex-1">
+                  <img src="images/profile_picture_2.jpg" alt="Profile" class="w-28 h-28 sm:w-36 sm:h-36 md:w-56 md:h-56 rounded-full object-cover border-4 md:border-8 border-white shadow-2xl avatar-hero">
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2: METI Internship -->
+            <div class="hero-slide overflow-hidden relative" data-hero-slide aria-hidden="true">
+              <!-- Slide-specific background overlay (different colors) -->
+              <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-br from-slate-950/55 via-indigo-900/35 to-rose-900/45"></div>
+              <div aria-hidden="true" class="absolute inset-0 bg-black/10"></div>
+
+              <!-- Decorative layer (sakura framing + larger pagoda) -->
+              <div aria-hidden="true" class="absolute inset-0 pointer-events-none select-none">
+                <img src="images/Sakura.png" alt="" class="hidden md:block absolute -top-16 -left-16 w-72 opacity-35 rotate-6" />
+                <img src="images/Sakura.png" alt="" class="hidden md:block absolute -top-20 -right-20 w-80 opacity-30 -rotate-12" />
+                <img src="images/Sakura.png" alt="" class="hidden md:block absolute -bottom-24 -left-20 w-72 opacity-25 rotate-12" />
+                <img src="images/Pagoda.png" alt="" class="absolute bottom-0 right-0 w-48 md:w-96 opacity-30 md:opacity-60 md:scale-110 lg:scale-125 origin-bottom-right" />
+              </div>
+
+              <div class="relative z-10 w-full h-full px-4 py-8 sm:px-6 sm:py-10 md:p-16 flex flex-col justify-center gap-4 pb-14 md:pb-16">
+                <div class="flex flex-col items-start min-w-0 w-full overflow-hidden">
+                  <h1 class="text-xl sm:text-2xl md:text-5xl font-extrabold mb-1 text-white drop-shadow-lg leading-tight w-full">METI Internship Japan 2025</h1>
+                  <h2 class="text-xs sm:text-sm md:text-2xl font-semibold mb-3 text-white/90">Internships in Japan for AI &amp; Tech &#xFF06; Job Fair Program</h2>
+                  <div class="text-white/85 space-y-1 md:space-y-3 mb-4 text-xs sm:text-sm md:text-base">
+                    <p class="flex items-start gap-3"><i class="fas fa-location-dot mt-1"></i><span><strong>Location:</strong> Tokyo, Japan</span></p>
+                    <p class="flex items-start gap-3"><i class="fas fa-building mt-1"></i><span><strong>Host:</strong> <a href="https://www.act-node.com/" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-white">ACT Node Inc.</a> &mdash; Intern AI Engineer</span></p>
+                    <p class="flex items-start gap-3"><i class="fas fa-calendar-days mt-1"></i><span><strong>Period:</strong> Oct – Dec 2025</span></p>
+                    <p class="flex items-start gap-3"><i class="fas fa-heart mt-1"></i><span>Grateful for an intense, rewarding learning journey in Japan.</span></p>
+                  </div>
+
+                  <!-- Linked icons -->
+                  <div class="flex flex-wrap items-center gap-3 mb-5">
+                    <a href="https://www.act-node.com" target="_blank" rel="noopener noreferrer" aria-label="ACT Node Inc." class="inline-flex items-center justify-center p-2 md:p-3 rounded-xl bg-white/15 hover:bg-white/25 transition-colors">
+                      <img src="images/ACTNODE.png" alt="" class="h-7 md:h-9 w-auto" />
+                    </a>
+                    <a href="https://act-app.com/pub-welcome" target="_blank" rel="noopener noreferrer" aria-label="ACT App" class="inline-flex items-center justify-center p-2 md:p-3 rounded-xl bg-white/15 hover:bg-white/25 transition-colors">
+                      <img src="images/ACT%20App..png" alt="" class="h-7 md:h-9 w-auto" />
+                    </a>
+                    <a href="https://www.linkedin.com/company/japan-internship-jobfair/" target="_blank" rel="noopener noreferrer" aria-label="METI Internship Program" class="inline-flex items-center justify-center p-2 md:p-3 rounded-xl bg-white/15 hover:bg-white/25 transition-colors">
+                      <img src="images/METI%20LOGO.png" alt="" class="h-7 md:h-9 w-auto" />
+                    </a>
+                  </div>
+
+                  <div class="flex gap-4">
+                    <a href="https://linkedin.com/in/sandeep-dassanayake" target="_blank" class="text-white/80 hover:text-accent text-xl md:text-2xl"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/G5andeepD" target="_blank" class="text-white/80 hover:text-accent text-xl md:text-2xl"><i class="fab fa-github"></i></a>
+                    <a href="mailto:gdasanayake54@gmail.com" class="text-white/80 hover:text-accent text-xl md:text-2xl"><i class="fas fa-envelope"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="flex-1 flex justify-center">
-          <img src="images/profile_picture_2.jpg" alt="Profile" class="w-56 h-56 rounded-full object-cover border-8 border-white shadow-2xl avatar-hero">
+
+        <!-- Hero pagination dots (manual slide control) -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
+          <button type="button" data-hero-dot="0" aria-label="Show profile slide" aria-current="true" class="h-2.5 w-2.5 rounded-full bg-white/90 shadow"></button>
+          <button type="button" data-hero-dot="1" aria-label="Show METI internship slide" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/40 hover:bg-white/60 transition-colors"></button>
         </div>
       </section>
       <!-- Education Section -->
@@ -679,10 +767,12 @@
         this.classList.add('active');
       });
     });
-    // Dark mode toggle
-    document.getElementById('dark-toggle').onclick = function() {
+    // Dark mode toggle — sidebar button + mobile floating button
+    function toggleDark() {
       document.documentElement.classList.toggle('dark');
-    };
+    }
+    document.getElementById('dark-toggle').onclick = toggleDark;
+    document.getElementById('dark-toggle-mobile').onclick = toggleDark;
     document.addEventListener('DOMContentLoaded', function () {
       const sections = [
         'hero',
@@ -731,6 +821,58 @@
           }
         });
       });
+
+      // Hero slideshow (2 slides)
+      const heroCarousel = document.getElementById('hero-carousel');
+      if (heroCarousel) {
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const track = heroCarousel.querySelector('[data-hero-track]');
+        const slides = Array.from(heroCarousel.querySelectorAll('[data-hero-slide]'));
+        const dots = Array.from(document.querySelectorAll('#hero [data-hero-dot]'));
+        let activeIndex = 0;
+        let autoTimerId = null;
+
+        function showSlide(nextIndex) {
+          if (!track) return;
+          slides.forEach((slide, idx) => {
+            slide.setAttribute('aria-hidden', (idx !== nextIndex).toString());
+          });
+          track.style.transform = `translate3d(-${nextIndex * 100}%, 0, 0)`;
+          dots.forEach((dot, idx) => {
+            const isActive = idx === nextIndex;
+            dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+            dot.classList.toggle('bg-white/90', isActive);
+            dot.classList.toggle('bg-white/40', !isActive);
+          });
+          activeIndex = nextIndex;
+        }
+
+        showSlide(activeIndex);
+
+        dots.forEach(dot => {
+          dot.addEventListener('click', () => {
+            const index = Number(dot.getAttribute('data-hero-dot'));
+            if (!Number.isNaN(index)) {
+              showSlide(index);
+              if (autoTimerId) {
+                window.clearInterval(autoTimerId);
+                autoTimerId = null;
+              }
+              if (!prefersReducedMotion && slides.length > 1) {
+                autoTimerId = window.setInterval(() => {
+                  showSlide((activeIndex + 1) % slides.length);
+                }, 8000);
+              }
+            }
+          });
+        });
+
+        if (!prefersReducedMotion && slides.length > 1) {
+          autoTimerId = window.setInterval(() => {
+            showSlide((activeIndex + 1) % slides.length);
+          }, 8000);
+        }
+      }
     });
   </script>
 </body>
