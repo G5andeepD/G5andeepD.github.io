@@ -57,7 +57,11 @@
     };
   </script>
   <style>
-    html, body { font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif; }
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    }
     .glass {
       background: rgba(255,255,255,0.15);
       box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -105,7 +109,7 @@
       background: linear-gradient(120deg, #6366f1 0%, #a21caf 50%, #f43f5e 100%);
     }
 
-    .hero-viewport { overflow: hidden; width: 100%; isolation: isolate; }
+    .hero-viewport { overflow: hidden; width: 100%; max-width: 100%; isolation: isolate; }
     .hero-track {
       display: flex;
       align-items: stretch;
@@ -114,11 +118,20 @@
       backface-visibility: hidden;
       transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .hero-slide { flex: 0 0 100%; }
+    .hero-slide {
+      flex: 0 0 100%;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      overflow-wrap: anywhere;
+    }
     @media (min-width: 768px) {
-      .hero-viewport { height: 100%; }
-      .hero-track { height: 100%; }
-      .hero-slide { height: 100%; }
+      #hero-carousel,
+      .hero-viewport,
+      .hero-track,
+      .hero-slide {
+        min-height: 60vh;
+      }
     }
     @media (prefers-reduced-motion: reduce) {
       .hero-track { transition: none; }
@@ -156,7 +169,7 @@
       </button>
     </aside>
     <!-- Main Content -->
-    <main class="flex-1 ml-20 md:ml-64 p-3 sm:p-6 md:p-12">
+    <main class="flex-none min-w-0 w-[calc(100%_-_5rem)] md:w-[calc(100%_-_16rem)] ml-20 md:ml-64 p-3 sm:p-6 md:p-12 overflow-x-hidden">
       <!-- Hero Section -->
       <section id="hero" class="relative flex items-center hero-gradient-bg rounded-3xl glass shadow-2xl overflow-hidden mb-12 md:min-h-[60vh]">
         <div id="hero-carousel" class="hero-viewport">
@@ -186,7 +199,57 @@
               </div>
             </div>
 
-            <!-- Slide 2: METI Internship -->
+            <!-- Slide 2: General Convocation Gold Medal -->
+            <div class="hero-slide overflow-hidden relative" data-hero-slide aria-hidden="true">
+              <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-br from-amber-500/45 via-yellow-700/25 to-purple-950/55"></div>
+              <div aria-hidden="true" class="absolute -top-24 -right-24 w-72 h-72 md:w-96 md:h-96 rounded-full border-[2rem] border-yellow-200/10"></div>
+              <div aria-hidden="true" class="absolute -bottom-36 -left-24 w-80 h-80 rounded-full bg-amber-300/10 blur-3xl"></div>
+
+              <div class="relative z-10 w-full h-full px-4 py-8 sm:px-6 sm:py-10 md:p-16 flex flex-col sm:flex-row items-center justify-center gap-5 md:gap-12 pb-14 md:pb-16">
+                <div class="flex flex-col items-center sm:items-start min-w-0 w-full sm:flex-1 text-center sm:text-left">
+                  <span class="inline-flex items-center gap-2 px-3 py-1 mb-3 rounded-full bg-yellow-300/20 border border-yellow-200/30 text-yellow-100 text-xs sm:text-sm font-semibold uppercase tracking-wider">
+                    <i class="fas fa-graduation-cap"></i> General Convocation 2025
+                  </span>
+                  <h1 class="text-xl sm:text-2xl md:text-5xl font-extrabold mb-3 text-white drop-shadow-lg leading-tight w-full">University Gold Medal</h1>
+                  <p class="text-sm sm:text-base md:text-2xl font-semibold text-white/95 leading-snug mb-2">Faculty of Engineering</p>
+                  <p class="text-xs sm:text-sm md:text-lg text-yellow-50/90 leading-relaxed max-w-3xl">Graduating with the Peradeniya University Gold Medal for Scholastic and Extra-Mural Excellence.</p>
+                </div>
+                <div class="hidden sm:flex shrink-0 items-center justify-center">
+                  <div class="relative flex items-center justify-center w-32 h-32 md:w-56 md:h-56 rounded-full bg-yellow-300/15 border border-yellow-100/30 shadow-2xl">
+                    <div class="absolute inset-4 rounded-full border-2 border-dashed border-yellow-100/35"></div>
+                    <i class="fas fa-medal text-7xl md:text-9xl text-yellow-200 drop-shadow-2xl"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 3: MERCon Publication Acceptance -->
+            <div class="hero-slide overflow-hidden relative" data-hero-slide aria-hidden="true">
+              <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-br from-cyan-950/65 via-indigo-900/45 to-fuchsia-950/55"></div>
+              <div aria-hidden="true" class="absolute top-8 right-8 w-40 h-40 md:w-72 md:h-72 rounded-full border border-cyan-200/15"></div>
+              <div aria-hidden="true" class="absolute top-16 right-16 w-28 h-28 md:w-56 md:h-56 rounded-full border border-fuchsia-200/15"></div>
+              <div aria-hidden="true" class="absolute -bottom-20 -right-16 w-72 h-72 bg-cyan-300/10 rounded-full blur-3xl"></div>
+
+              <div class="relative z-10 w-full h-full px-4 py-8 sm:px-6 sm:py-10 md:p-16 flex flex-col justify-center pb-14 md:pb-16">
+                <div class="max-w-5xl">
+                  <span class="inline-flex items-center gap-2 px-3 py-1 mb-3 rounded-full bg-cyan-300/15 border border-cyan-100/25 text-cyan-100 text-xs sm:text-sm font-semibold uppercase tracking-wider">
+                    <i class="fas fa-file-circle-check"></i> Publication Acceptance Alert
+                  </span>
+                  <h1 class="text-base sm:text-xl md:text-4xl font-extrabold mb-3 text-white drop-shadow-lg leading-tight break-words">
+                    TARVI: Transcription-Factor Aided RNA Velocity Inference with Supervised Latent Time and Velocity-Pseudotime Blending
+                  </h1>
+                  <p class="text-xs sm:text-sm md:text-lg text-white/85 mb-3">
+                    Chandula Adhikari, <strong class="text-white">Sandeep Dassanayake</strong>, Damayanthi Herath
+                  </p>
+                  <div class="inline-flex items-start gap-3 px-3 py-2 md:px-5 md:py-3 rounded-xl bg-white/10 border border-white/15 text-white/95 text-xs sm:text-sm md:text-lg">
+                    <i class="fas fa-circle-check mt-0.5 text-cyan-300"></i>
+                    <span>Accepted for <strong>Moratuwa Engineering Research Conference (MERCon) 2026</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 4: METI Internship -->
             <div class="hero-slide overflow-hidden relative" data-hero-slide aria-hidden="true">
               <!-- Slide-specific background overlay (different colors) -->
               <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-br from-slate-950/55 via-indigo-900/35 to-rose-900/45"></div>
@@ -238,7 +301,9 @@
         <!-- Hero pagination dots (manual slide control) -->
         <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
           <button type="button" data-hero-dot="0" aria-label="Show profile slide" aria-current="true" class="h-2.5 w-2.5 rounded-full bg-white/90 shadow"></button>
-          <button type="button" data-hero-dot="1" aria-label="Show METI internship slide" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/40 hover:bg-white/60 transition-colors"></button>
+          <button type="button" data-hero-dot="1" aria-label="Show General Convocation gold medal slide" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/40 hover:bg-white/60 transition-colors"></button>
+          <button type="button" data-hero-dot="2" aria-label="Show MERCon publication acceptance slide" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/40 hover:bg-white/60 transition-colors"></button>
+          <button type="button" data-hero-dot="3" aria-label="Show METI internship slide" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/40 hover:bg-white/60 transition-colors"></button>
         </div>
       </section>
       <!-- Education Section -->
@@ -822,7 +887,7 @@
         });
       });
 
-      // Hero slideshow (2 slides)
+      // Hero slideshow
       const heroCarousel = document.getElementById('hero-carousel');
       if (heroCarousel) {
         const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -876,4 +941,4 @@
     });
   </script>
 </body>
-</html> 
+</html>
