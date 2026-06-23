@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://g5andeepd.github.io/sitemap.xml
